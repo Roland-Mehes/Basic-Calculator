@@ -1,0 +1,151 @@
+.mainContainer {
+  gap: 30px;
+  padding-bottom: 40px;
+  border-radius: 60px;
+  border: 1px solid var(--Grey);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.header {
+  padding: 40px;
+  border-bottom: 1px solid var(--Grey);
+}
+
+.header > h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lineHeightH2);
+}
+
+.bottomContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 40px;
+}
+
+.displayContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 401px;
+  scrollbar-color: var(--Grey) #000;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable both-edges;
+}
+
+.displayContainer > h1 {
+  font-size: var(--fs-h1);
+  line-height: var(--lineHeightH1);
+  text-align: right;
+  text-wrap: nowrap;
+  margin: 0;
+  position: relative;
+}
+
+.blinking {
+  animation: blinking 1s ease-in-out infinite;
+  position: absolute;
+  bottom: 10px;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.operators {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.operators > button {
+  background-color: var(--Orange);
+}
+
+.operators > button:hover {
+  background-color: var(--LightOrange);
+}
+
+.button {
+  background-color: var(--Grey);
+  color: #fff;
+  width: 90px;
+  height: 90px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  line-height: 48px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.numbers > button:hover {
+  background-color: var(--LightGrey);
+}
+
+.zeroButton {
+  grid-column: span 2;
+  width: 200px;
+  border-radius: 80px;
+  padding: 0 35px;
+  justify-content: flex-start;
+}
+
+@media (max-width: 501px) {
+  body {
+    display: flex;
+  }
+
+  .mainContainer,
+  .bottomContainer,
+  .numbers,
+  .operators {
+    gap: 15px;
+  }
+
+  .mainContainer {
+    border: none;
+  }
+
+  .header > h2 {
+    padding: 15px;
+  }
+
+  .bottomContainer {
+    padding: 0 15px;
+  }
+
+  .displayContainer {
+    padding: 0 15px;
+  }
+
+  .button {
+    height: 80px;
+    width: 80px;
+  }
+
+  .zeroButton {
+    width: 175px;
+    height: 80px;
+  }
+}
+
+@keyframes blinking {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
+  }
+}

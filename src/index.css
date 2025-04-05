@@ -1,0 +1,38 @@
+:root {
+  --Orange: #ff9f03;
+  --LightOrange: #ffbb4c;
+
+  --Grey: #3a3a3c;
+  --LightGrey: #626262;
+  --White: #fff;
+  --Black: #000;
+
+  font-family: Helvetica, sans-serif;
+
+  --fs-h1: 65px;
+  --lineHeightH1: 54px;
+  --fs-h2: 35px;
+  --lineHeighth2: 42px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 65px;
+  line-height: 54px;
+  font-weight: 300;
+}
+
+body {
+  background-color: var(--Black);
+  color: var(--White);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+}
