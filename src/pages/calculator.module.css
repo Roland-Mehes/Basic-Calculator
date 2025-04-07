@@ -5,7 +5,6 @@
   border: 1px solid var(--Grey);
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .header {
@@ -31,7 +30,7 @@
   max-width: 401px;
   scrollbar-color: var(--Grey) #000;
   scrollbar-width: thin;
-  scrollbar-gutter: stable both-edges;
+  scroll-behavior: smooth;
 }
 
 .displayContainer > h1 {
@@ -128,11 +127,14 @@
 
   .displayContainer {
     padding: 0 15px;
+    max-width: 370px;
   }
 
   .button {
     height: 80px;
     width: 80px;
+    font-size: 30px;
+    line-height: 36px;
   }
 
   .zeroButton {

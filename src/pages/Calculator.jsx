@@ -1,63 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './calculator.module.css';
 
 const Calculator = () => {
   const [summs, setSumms] = useState('');
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const displayRef = useRef(null);
 
-  // Function to handle button clicks
+  useEffect(() => {
+    if (displayRef.current) {
+      displayRef.current.scrollLeft = displayRef.current.scrollWidth;
+    }
+  }, [summs]);
+
   const handleButtonClick = (value) => {
     if (value === 'C') {
       setSumms('_');
       return;
     }
-    // if (summs.length === 12) {
-    //   return;
-    // }
 
-    const operators = ['+', 'x', '÷', '±', '%', '*', '/', '-'];
+    const operators = ['+', 'x', '÷', '%', '-', '*', '/'];
     const lastChar = summs.trim().slice(-1);
 
-    // Edgecase handling
-    if (summs === '_' && operators.includes(value)) return; // Ignoring operators if there is no number in input
-    if (operators.includes(lastChar) && operators.includes(value)) return; // Ignoring multipe operator
-
-    // Ignoring multiple decimal numbers like 5.10.3
-    if (summs === '0' && value !== '.' && !isNaN(value)) {
-      setSumms(value);
-      return;
-    }
-    if (value === '.' && lastChar === '.') return;
+    // Ignore if the input ends with an operator
     if (
-      value === '.' &&
-      summs
-        .split(/[\+\-\*\/]/)
-        .pop()
-        .includes('.')
-    ) {
+      operators.includes(lastChar) &&
+      operators.includes(value) &&
+      value !== '±'
+    )
       return;
-    }
-    // ------------------------------------------
+
     if (value === '±') {
-      setSumms((prev) => (prev.startsWith('-') ? prev.slice(1) : '-' + prev));
+      let parts = summs.trim().split(' ');
+      let lastPart = parts[parts.length - 1];
+
+      if (!isNaN(lastPart) || /^\(-\d+(\.\d+)?\)$/.test(lastPart)) {
+        if (lastPart.startsWith('(-') && lastPart.endsWith(')')) {
+          //If the number negative take down the (- )
+          parts[parts.length - 1] = lastPart.slice(2, -1); // e.g. "(-5)" -> "5"
+        } else {
+          // IF the number is positive add (- )
+          parts[parts.length - 1] = `(-${lastPart})`;
+        }
+        setSumms(parts.join(' '));
+      }
+
       return;
     }
+
+    // Handle other button presses (numbers and operators)
     if (value === '%') {
       setSumms((prev) => (parseFloat(prev) / 100).toString());
       return;
     }
+
     if (value === '÷') {
       setSumms((prev) => prev + ' / ');
       return;
     }
+
     if (value === 'x') {
       setSumms((prev) => prev + ' * ');
       return;
     }
+
     if (value === '-' || value === '+') {
       setSumms((prev) => prev + ` ${value} `);
       return;
     }
+
     if (value === '=') {
       try {
         if (summs === '_') {
@@ -67,13 +76,14 @@ const Calculator = () => {
           setSumms('Error');
           return;
         }
-        setSumms(eval(summs).toString());
+        setSumms(eval(summs.replace(/x/g, '*').replace(/÷/g, '/')).toString());
       } catch {
         setSumms('Error');
       }
       return;
     }
 
+    // Add number or other operator to summs
     if (summs === '_' || summs === 'Error') {
       setSumms(value.toString());
     } else {
@@ -87,7 +97,7 @@ const Calculator = () => {
         <h2>Calculator</h2>
       </div>
       <div className={styles.bottomContainer}>
-        <div className={styles.displayContainer}>
+        <div className={styles.displayContainer} ref={displayRef}>
           <h1 className={summs === '' || summs === '_' ? styles.blinking : ''}>
             {summs || '_'}
           </h1>
