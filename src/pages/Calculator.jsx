@@ -11,23 +11,25 @@ const Calculator = () => {
     }
   }, [summs]);
 
+  const operators = ['+', 'x', '÷', '%', '-', '*', '/'];
+
   const handleButtonClick = (value) => {
     if (value === 'C') {
       setSumms('_');
       return;
     }
 
-    const operators = ['+', 'x', '÷', '%', '-', '*', '/'];
     const lastChar = summs.trim().slice(-1);
 
-    // Ignore if the input ends with an operator
+    // Avoid multiple operator chain , and let change the last operator.
     if (
       operators.includes(lastChar) &&
       operators.includes(value) &&
       value !== '±'
-    )
+    ) {
+      setSumms((prev) => prev.trim().slice(0, -1) + value);
       return;
-
+    }
     if (value === '±') {
       let parts = summs.trim().split(' ');
       let lastPart = parts[parts.length - 1];
@@ -76,7 +78,7 @@ const Calculator = () => {
           setSumms('Error');
           return;
         }
-        setSumms(eval(summs.replace(/x/g, '*').replace(/÷/g, '/')).toString());
+        setSumms(eval(summs).toString());
       } catch {
         setSumms('Error');
       }
@@ -87,7 +89,12 @@ const Calculator = () => {
     if (summs === '_' || summs === 'Error') {
       setSumms(value.toString());
     } else {
-      setSumms((prev) => prev + value);
+      const lastChar = summs.trim().slice(-1);
+
+      // If the last character is ) e.g. (-8) and the user input is another number , insert a * operator between.
+      if (lastChar === ')' && !isNaN(value)) {
+        setSumms((prev) => prev + ' * ' + value);
+      } else setSumms((prev) => prev + value);
     }
   };
 
